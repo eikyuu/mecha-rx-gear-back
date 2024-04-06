@@ -1,4 +1,5 @@
 import Gunpla from '#models/gunpla';
+import Price from '#models/price';
 import { BaseCommand } from '@adonisjs/core/ace'
 import type { CommandOptions } from '@adonisjs/core/types/ace'
 import axios from 'axios';
@@ -28,18 +29,28 @@ export default class WebScrapper extends BaseCommand {
 
         gunplas.push({
           name: title,
-          price: price,
           series: 'inconnu',
           image: image,
           description: 'This is a description',
           grade: grade,
+          releaseDate: new Date(),
+          size: '1/144',
+          manufacturer: 'Bandai',
         });
       });
 
-      // Assuming Product is a model and create is the correct method to use
       for (const gunpla of gunplas) {
-        await Gunpla.create(gunpla);
-      }
+        // Create Gunpla entry
+        const createdGunpla = await Gunpla.create(gunpla);
+    
+        // Create Price entry associated with the created Gunpla
+        await Price.create({
+            gunplaId: createdGunpla.id, // Use the id of the created Gunpla
+            price: 100,
+            priceCurrency: 'USD',
+            retailerId: 1
+        });
+    }
 
       console.log('Products have been added to the database');
     } catch (error) {

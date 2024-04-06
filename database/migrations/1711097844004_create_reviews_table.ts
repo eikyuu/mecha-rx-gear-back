@@ -1,7 +1,7 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'gunplas'
+  protected tableName = 'reviews'
 
   async up() {
     this.schema.createTable(this.tableName, (table) => {
@@ -9,12 +9,10 @@ export default class extends BaseSchema {
 
       table.timestamp('created_at')
       table.timestamp('updated_at')
-      table.string('name').notNullable()
-      table.string('price').notNullable()
-      table.string('grade').notNullable()
-      table.string('series').notNullable()
-      table.string('image').notNullable()
-      table.text('description').notNullable()
+      table.integer('user_id').unsigned().references('users.id').onDelete('CASCADE')
+      table.integer('gunpla_id').unsigned().references('gunplas.id').onDelete('CASCADE')
+      table.text('comment').notNullable()
+      table.integer('rating').notNullable()
 
     })
   }
