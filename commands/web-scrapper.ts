@@ -24,7 +24,7 @@ export default class WebScrapper extends BaseCommand {
       $('li.product').each((_i, el) => {
 
         const title = $(el).find('h2').text();
-        const price = $(el).find('.price').text();
+        // const price = $(el).find('.price').text();
         const image = $(el).find('img').attr('src');
 
         gunplas.push({
